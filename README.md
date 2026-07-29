@@ -15,9 +15,9 @@
 
 ## 为什么这三条一起
 
-<p align="center"><img src="https://raw.githubusercontent.com/yangshaoxiong007/RL4LLM-Reading/main/images/concept-map.png" width="92%" alt="三线索概念图：信用归因的时间轴/结构轴/机制尺度，论文流入，交汇于作者研究线"/></p>
+<p align="center"><img src="https://raw.githubusercontent.com/yangshaoxiong007/RL4LLM-Reading/main/images/concept-map.png" width="92%" alt="三轴概念图：长程 RL / 信用分配 / 搜索过程奖励三条前沿；论文沿时间轴、结构轴、机制轴流入，交汇于同一个信用归因问题"/></p>
 
-<sub align="center">三条交错前沿 = 同一信用归因问题在时间轴(长程)、结构轴(多智能体)、机制(搜索过程奖励)三尺度的投影，关键论文沿各轴流入，交汇于多智能体搜索 + RL。</sub>
+<sub align="center">三条交错前沿在文献上反复出现同一现象：稀疏末端奖励无法忠实分解到中间步与各智能体。本图把 2024–2026 年的关键工作沿时间轴 / 结构轴 / 机制轴归类，三者交汇于「信用归因」这一核心难题——它既是它们各自的瓶颈，也是它们互相借力的接缝。</sub>
 
 
 这三条线是**同一问题在三个信用归因尺度上的投影**,当 agent 在长程上搜索时,它们塌缩为同一研究议程:
