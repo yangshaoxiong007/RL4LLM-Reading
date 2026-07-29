@@ -1,80 +1,89 @@
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0F2027,55:22D3EE,100:5B8CFF&height=140&section=header&text=03%20%C2%B7%20Process%20Reward%20for%20Search&fontSize=34&fontColor=ffffff&fontAlignY=50&fontAlign=50&animation=fadeIn"/>
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0F2027,55:22D3EE,100:5B8CFF&height=140&section=header&text=03%20%C2%B7%20Process%20Reward%20for%20Search&fontSize=30&fontColor=ffffff&fontAlignY=50&fontAlign=50&animation=fadeIn"/>
+
+<p align="center"><sub>🇬🇧 English &nbsp;·&nbsp; <a href="./03-process-reward-search.zh.md">🇨🇳 中文</a> &nbsp;·&nbsp; cross-refs <a href="./01-long-horizon-rl.md">01 Long-Horizon</a> · <a href="./02-credit-assignment-rl.md">02 Credit</a></sub></p>
 
 ## 1 · Why it matters
 
-A **process reward** is a *step-level, checkable* signal $r_t$ along a reasoning/search trajectory, as opposed to the *outcome reward* $r_H$ at the end. It is the concrete mechanism that resolves *both* earlier threads at once:
+A **process reward** is a *step-level, checkable* signal $r_t$ along a trajectory, vs. the terminal *outcome reward* $r_H$. It resolves both earlier threads at once:
+- vs. doc 01: dense $r_t$ shrinks the temporal horizon of credit from $H$ to ~1;
+- vs. doc 02: per-step/turn rewards *are* a credit signal — decomposing the team outcome into attributable pieces without a centralized $Q$.
 
-- vs. doc 01: dense $r_t$ shrinks the temporal horizon of the credit problem from $H$ to ~1, because each step is rewarded locally;
-- vs. doc 02: per-step / per-turn rewards *are* a credit signal — they decompose the team outcome into attributable pieces without a centralized $Q$.
-
-**Search is the domain where process rewards are most natural** because each retrieval / reasoning step has a *checkable intermediate state*: does the fetched evidence support the partial answer? does the query retrieve *novel* useful information? is the reasoning step locally sound? Search turns "process reward" from a hand-labeled luxury (PRM800K) into something partially *machine-verifiable*, which is why Search-R1-class work can train with far less human annotation than math-PRM work.
+**Search is the domain where process rewards are most natural** because each retrieval/reasoning step has a *checkable intermediate state*: does fetched evidence support the partial answer? does the query retrieve *novel* useful info? Search turns "process reward" from a hand-labeled luxury (PRM800K) into something *partly machine-verifiable* — why Search-R1-class work trains with far less human annotation.
 
 ## 2 · Formalization
 
-Model search as an MDP:
+Search as MDP: $s_t=$ accumulated context, $a_t\in\{$query, tool-call, reason-step, terminate$\}$. Outcome RL: $r_t=0(t<H), r_H=\text{verifier(answer)}$. Process-rewarded RL replaces it with $r_t$ (defined or *learned*). Three forms:
+1. **Human PRM** — classifier $\rho_\phi$ on step labels (PRM800K).
+2. **MC-auto PRM** — $\rho_\phi$ = empirical eventual-success conditioned on reaching the step, via sampled continuations (Math-Shepherd); the trick that makes PRMs cheap.
+3. **Implicit / verifiable process reward** — no separate $\rho_\phi$; shape outcome onto steps via an auxiliary objective (token-level advantage, or Search-R1's per-search-step rules).
 
-$$\mathcal M=(\mathcal S,\mathcal A,P,r,\gamma),\qquad s_t=\text{accumulated context},\quad a_t\in\{\text{query},\text{tool-call},\text{reason-step},\text{terminate}\}$$
+The estimator turning $r_t$ into a gradient is the same leave-one-out/group advantage as doc 01, applied at step granularity — why process reward and GRPO compose.
 
-Outcome RL uses $r=\sum_t r_t$ with $r_t=0$ for $t<H$, $r_H=\text{verifier}(\text{answer})$. **Process-rewarded RL** replaces this with $r_t$ defined (or *learned* from rollouts) per step. Three forms of $r_t$:
+## 3 · Method taxonomy (with precise 2025–2026 search-RL classification)
 
-1. **Human-annotated PRM** — a classifier $\rho_\phi(s_t,a_t)\to[0,1]$ trained on step labels (correct/incorrect/useful) — PRM800K.
-2. **Auto-labeled PRM (Monte-Carlo)** — estimate $\rho_\phi$ by the empirical probability of *eventual success* conditioned on reaching step $(s_t,a_t)$, via sampled continuations — Math-Shepherd; the trick that makes PRMs cheap.
-3. **Implicit / verifiable process reward** — no separate $\rho_\phi$; instead *shape* the outcome reward onto steps through an auxiliary objective (e.g. token-level advantage from a value/VLM, or step-level verifier as in Search-R1's per-search-step rule).
+The table fuses classic PRMs and recent search RL, annotated [reward type / scope / algorithm] — cross-checked against public awesome-lists and arXiv title verification.
 
-The estimator that turns $r_t$ into a gradient is the same as doc 01's: a leave-one-out / group advantage **applied at step granularity** — which is exactly why process reward and GRPO compose, and exactly where the search-RL trio lives.
+| Work | $r_t$ source | Reward type | Scope | Algorithm | arXiv |
+|---|---|---|---|---|---|
+| PRM800K / Let's Verify | human step-correctness | PRM | step | (BoN eval) | **2305.20050** ✓ |
+| Math-Shepherd | MC auto-label | PRM | step | RL on PRM | **2312.08935** ✓ |
+| Search-R1 | per-retrieval rule | rule PRM | step | GRPO | **2503.09516** ✓ |
+| R1-Searcher | per-retrieval rule | PRM | step | GRPO | **2503.05592** ✓ |
+| ReSearch | reasoning-evidence align | PRM | step | GRPO | **2503.19470** ✓ |
+| ReasonRAG | shortest-path (MCTS) | PRM | step | DPO | **2505.14069** ✓ |
+| LeTS | process+outcome hybrid | ORM+PRM | step | RL | **2505.17447** ✓ |
+| E-GRPO | entity-match-rate partial | PRM | step | GRPO | **2510.24694** ✓ |
+| StepSearch | info-gain/redundancy | ORM+PRM | step | PPO | **2505.15107** ✓ |
+| IGPO / IG-Search | info-gain pseudo | ORM+PRM | step | IGPO/GRPO | **2510.14967** ✓ / **2604.15148** ✓ |
+| CW-GRPO | LLM-judge contribution | ORM+PRM | step | CW-GRPO | **2604.14267** ✓ (ACL26) |
+| SLATE | truncated step + decomposed | PRM | step | step-GRPO | **2602.23440** ✓ |
+| C-GRPO | citation rubric | PRM | step | GRPO | **2601.06021** ✓ |
+| Search-R2 | actor-refiner dense | PRM | single | — | **2602.03647** ✓ |
+| PRMBench | PRM benchmark | (eval) | — | — | **2501.03124** ✓ |
 
-## 3 · Method taxonomy
-
-| Family | What provides $r_t$ | Faithfulness | Cost | Representative |
-|---|---|---|---|---|
-| **Human PRM** | labeled step correctness | High but bounded by labeler quality | Very high (PRM800K ≈ 800k human labels) | Let's Verify (2305.20050) |
-| **MC-auto PRM** | empirical eventual-success per step | Self-consistent; biased by rollout policy | Moderate (rollouts at labeling time) | Math-Shepherd (2312.08935) |
-| **Implicit PRM / rechecking** | derive step reward from outcome + value | No annotation; inherits value-bias noise | Low | Implicit PRM / rechecked reasoning (arXiv ID unconfirmed) |
-| **Search-step verifier PRM** | rule-based per retrieval step (evidence sufficiency, novelty) | Faithful for factual search | Low (heuristic + verifier) | Search-R1 (arXiv:2503.09516); R1-Searcher (arXiv:2503.05592); ReSearch (arXiv:2503.19470) |
-| **Outcome-RL + PRM-outcome hybrid** | train PRM from outcome rollouts, then RL on PRM | Combines 2+4; PRM can drift from outcome | Moderate | autumo-PRM / Q*-style reward shaping (arXiv ID unconfirmed) |
-| **Step-level outcome decomposition (the author's setting)** | decompose team outcome onto role-steps | Bridges doc 02 ⇆ 03 | Verifier-bound | Multi-Agent Search + RL (ACL 2026) |
+> Spectrum read: 2025–2026 search RL is **almost uniformly step-level + PRM** (or ORM+PRM hybrid); pure outcome RL is now a minority — double-sided evidence for doc 03 §5's critique ("PRM universally better" accepted in practice; "judge/heuristic brittleness" inherited in practice).
 
 ## 4 · Paper dissection (expert)
 
-### PRM800K / Let's Verify Step by Step (arXiv 2305.20050) ✓
-**Contribution.** Scale human *step-level* labels (correct/incorrect per CoT step) to ~800k annotations; train a process reward model $\rho_\phi$ and show that **best-of-N with $\rho_\phi$ beats outcome-reward best-of-N** on math. The empirical founding result: *process supervision helps*.
-**The expert caveat.** The gain is largest where (i) the task decomposes into checkable steps and (ii) humans can label those steps reliably. Research/search only partially satisfies (ii); the legacy of this paper is not "annotate everything" but **"find the cheap verifier"** — which the search-RL trio does by replacing human labelers with retrieval-time heuristics.
-**Limit.** Labeler disagreement on ambiguous steps; label cost makes it non-reproducible at scale.
+### PRM800K / Let's Verify (arXiv:2305.20050✓)
+Scale human *step-level* labels to ~800k; train $\rho_\phi$; show **best-of-N with $\rho_\phi$ beats outcome-reward best-of-N** on math. Founding result: *process supervision helps*.
+**Caveat.** Gain is largest where the task decomposes into checkable steps that humans label reliably. Research/search only partially satisfies the latter; the legacy is not "annotate everything" but **"find the cheap verifier"** — which the search-RL trio does by replacing human labelers with retrieval-time heuristics.
 
-### Math-Shepherd (arXiv 2312.08935) ✓
-**Contribution.** **Auto-label** step rewards by Monte-Carlo: for each partial solution, sample completions; label the step "hard" (+) if completions frequently reach the correct *final* answer, "weak" otherwise. This removes the human labeler — PRMs become data-generated — and is the practical pivot that made process-rewarded RL deployable.
-**The subtle point.** Math-Shepherd's auto-label is **consistent with the labeling-time policy** — if the rollout policy improves, the labels change. This is a *feature* (self-improving supervision) and a *bug* (PRM lag, distribution shift between labeler and learner). The same tension is the reason R1-style outcome RL can overtake PRM-RL in some regimes: outcome RL needs no policy-consistent labeler.
-**Read across docs.** Math-Shepherd's MC labeling *is* a form of credit assignment (doc 02): it estimates, per step, the counterfactual "success probability if we reach here" — i.e. the step's marginal credit for the outcome. PRMs and COMA are estimating cousins of the same object.
+### Math-Shepherd (arXiv:2312.08935✓)
+**Auto-label** step rewards by Monte-Carlo: + if continuations frequently reach the correct final answer, − otherwise. Removes the human labeler; PRMs become data-generated — the practical pivot that made process-rewarded RL deployable.
+**Subtle point.** The auto-label is **consistent with the labeling-time policy** — if the policy improves, labels change. Feature (self-improving supervision) and bug (PRM lag, labeler/learner distribution shift). Same tension is why R1-style outcome RL can overtake PRM-RL in some regimes: it needs no policy-consistent labeler.
+**Cross-doc read.** MC labeling *is* a form of credit assignment (doc 02): it estimates, per step, the "success probability if we reach here" — the step's marginal credit. PRMs and COMA estimate cousins of the same object.
 
-### Search-RL trio: Search-R1 / R1-Searcher / ReSearch (IDs ⟨id→?⟩ — verify)
-**Common contribution.** Train LLM agents that **interleave reasoning and retrieval** under RL, using a **per-search-step process signal** (e.g. evidence-sufficiency / answer-grounding) alongside the final-answer outcome reward. This is where process reward meets long horizon (doc 01) *and* the search-as-MDP framing (§2).
-- **Search-R1-style** treats each retrieval call as an action and shapes reward with whether retrieved documents improve the partial answer — i.e. process reward = marginal information gain of the query.
-- **R1-Searcher-style** learns *when to search* and *what to query* as policy, process-rewarded by retrieval quality — closest to "verifiable process reward" in the open-ended setting.
-- **ReSearch-style** separates reasoning from search state, using process reward to align the reasoning transition with the retrieved evidence — a clean signal because the transition is locally checkable.
-**Expert synthesis (this is the crux of all three notes).** Search-RL is the existence proof that **process rewards can be made cheaper than outcome verifiers when the action space is search**, because retrieval steps have intermediate checkable states. This is precisely why *the author's multi-agent-search + RL line* lives here: role-specialized search agents share an outcome, and the only affordable credit signal is the search-step process reward — making doc 02's between-group credit problem *solvable from data* (the open problem stated in doc 02 §6).
+### Search-RL trio: Search-R1 / R1-Searcher / ReSearch
+Train LLM agents that **interleave reasoning and retrieval** under RL, with a **per-search-step process signal** (evidence sufficiency / answer grounding) alongside the final-answer reward. Process reward here meets long horizon (doc 01) *and* search-as-MDP (§2).
+- **Search-R1** (arXiv:2503.09516✓): each retrieval is an action; reward shaped by whether retrieval improves the partial answer → process reward = the query's marginal information gain.
+- **R1-Searcher** (arXiv:2503.05592✓): learns *when to search, what to query*, rewarded by retrieval quality — closest to "verifiable process reward" in the open-ended setting.
+- **ReSearch** (arXiv:2503.19470✓): separates reasoning from search state, uses process reward to align the reasoning transition with retrieved evidence — clean because the transition is locally checkable.
+**Expert synthesis (the crux of all three notes).** Search-RL is the existence proof that **process rewards can be cheaper than outcome verifiers when the action space is search**, because retrieval steps have checkable intermediate states. This is exactly why *the author's multi-agent-search + RL line* lives here: role-specialized search agents share an outcome, and the only affordable credit signal is the search-step process reward — making doc 02's between-group credit problem *solvable from data* (doc 02 §6).
+
+### The credit-via-PRM quartet: ReasonRAG / CW-GRPO / SLATE / E-GRPO
+These four weld process reward to credit assignment (doc 02) — the clearest 2025–2026 "PRM-as-credit" spectrum:
+- **ReasonRAG** (arXiv:2505.14069✓): systematically shows fine-grained process reward **beats** outcome-only; **5K samples ≈ Search-R1's 90K (18× data efficiency)** — process reward is not just better, it's cheaper.
+- **E-GRPO** (arXiv:2510.24694✓): standard GRPO wastes entity info; assigns partial reward proportional to entity-match rate to error samples, learning from "approximately correct" trajectories.
+- **SLATE** (arXiv:2602.23440✓): truncated step-level sampling + decomposed process reward (reasoning + query + answer quality); 7B +7.0%, 3B +30.7% vs. Search-R1.
+- **CW-GRPO** (arXiv:2604.14267✓, ACL26): LLM judge estimates per-turn contribution and rescales the outcome advantage — fine-grained credit; 8B +5.0%, 1.7B +6.3%.
+**Joint read.** This spectrum confirms doc 02's critique: **GRPO's exchangeability breaks on multi-step search, spawning an E-GRPO→CW-GRPO→SLATE→C-GRPO mainstream of "contribution/step-level credit"; but all rely on heuristics or an external judge with no precise causal attribution** — the unresolved junction of between-group credit + auto-PRM.
 
 ## 5 · Critique
 
-- **"PRM > ORM, always."** Only under cheap step-verifiability. For research/search the PRM is either heuristic (drift) or learned (Math-Shepherd lag); the gain over outcome RL is regime-dependent, not universal. Recent outcome-RL reproduction successes (R1-class) are quietly evidence *against* universal PRM superiority.
-- **Auto-PRM policy-consistency is under-theorized.** The MC label is policy-defined; few papers analyze the PRM-learner feedback loop. It behaves like a self-distillation, with the usual collapse/stagnation risks — unverified in practice.
-- **Search reward shape is brittle hand-design.** "Evidence sufficiency", "novelty", "grounding" are defined per paper, differ across the trio, and rarely ablated together. A shared, verifiable search-step reward benchmark is missing.
+- **"PRM > ORM, always."** Only under cheap step-verifiability. For research/search the PRM is heuristic (drift) or learned (Math-Shepherd lag); the gain over outcome RL is regime-dependent, not universal. Recent outcome-RL reproduction successes (R1-class) are quietly evidence *against* universal PRM superiority.
+- **Auto-PRM policy-consistency under-theorized.** The MC label is policy-defined; few papers analyze the PRM-learner feedback loop. It behaves like self-distillation, with collapse/stagnation risks — unverified in practice.
+- **Search reward shape is brittle hand-design.** "Evidence sufficiency / novelty / grounding" differ per paper, rarely ablated together across the trio. No shared, verifiable search-step reward benchmark (PRMBench only evaluates PRMs, not search-step rewards).
 
-## 6 · Open problems (→ the author's line)
+## 6 · Open problems (→ author's line)
 
 1. **A unified, verifiable search-process reward.** Converge the trio's ad-hoc step rewards into one checkable surrogate (the search analog of a math verifier).
-2. **Auto-PRM under multi-agent rollouts.** Math-Shepherd assumes a *single* continuation policy; in heterogeneous-agent search the labeled "eventual success" mixes role contributions. Credit-aware auto-PRM = the open joint of docs 02 ⇆ 03.
-3. **PRM-as-critic vs. PRM-as-reward.** Use a PRM as the centralized critic for credit (COMA-style, doc 02) rather than merely as a reward bonus — barely explored for LLM search agents.
-4. **Verifier for research.** The terminal constraint: without a research verifier, even perfect process-reward machinery caps at where the verifier is trustworthy.
+2. **Auto-PRM under multi-agent rollouts.** Math-Shepherd assumes a *single* continuation policy; in heterogeneous search, labeled "eventual success" mixes role contributions. Credit-aware auto-PRM = the open joint of docs 02 ⇆ 03.
+3. **PRM-as-critic vs. PRM-as-reward.** Use a PRM as the centralized credit critic (COMA-style, doc 02) rather than merely a reward bonus — barely explored for LLM search agents.
+4. **Verifier for research.** Terminal constraint: without a research verifier, even perfect process-reward machinery caps where the verifier is trustworthy.
 
-## References (subject to § verification)
+## References (§ verified)
 
-- Let's Verify Step by Step (PRM/PRM800K) — **arXiv:2305.20050** ✓
-- Math-Shepherd — **arXiv:2312.08935** ✓
-- Search-R1 — **arXiv:2503.09516** ✓
-- R1-Searcher — **arXiv:2503.05592** ✓
-- ReSearch — **arXiv:2503.19470** ✓
-- PRMBench — **arXiv:2501.03124** ✓
-- ProcessBench, Implicit PRM/rechecking — arXiv ID unconfirmed; cite by title
-- GRPO/Dr.GRPO/DAPO estimator context — doc 01
+Let's Verify **2305.20050**✓; Math-Shepherd **2312.08935**✓; Search-R1 **2503.09516**✓; R1-Searcher **2503.05592**✓; ReSearch **2503.19470**✓; ReasonRAG **2505.14069**✓; LeTS **2505.17447**✓; E-GRPO **2510.24694**✓; StepSearch **2505.15107**✓; IGPO **2510.14967**✓; IG-Search **2604.15148**✓; CW-GRPO **2604.14267**✓ (ACL26); SLATE **2602.23440**✓; C-GRPO **2601.06021**✓; Search-R2 **2602.03647**✓; PRMBench **2501.03124**✓. GRPO/Dr.GRPO/DAPO/LLDS/ASTER context — doc 01.
 
 <p align="center"><sub>03 / 03 · Process Reward for Search · cross-refs 01 (horizon), 02 (credit)</sub></p>
