@@ -29,9 +29,9 @@ The estimator that turns $r_t$ into a gradient is the same as doc 01's: a leave-
 |---|---|---|---|---|
 | **Human PRM** | labeled step correctness | High but bounded by labeler quality | Very high (PRM800K ≈ 800k human labels) | Let's Verify (2305.20050) |
 | **MC-auto PRM** | empirical eventual-success per step | Self-consistent; biased by rollout policy | Moderate (rollouts at labeling time) | Math-Shepherd (2312.08935) |
-| **Implicit PRM / rechecking** | derive step reward from outcome + value | No annotation; inherits value-bias noise | Low | Implicit PRM / rechecked reasoning ⟨id→?⟩ |
-| **Search-step verifier PRM** | rule-based per retrieval step (evidence sufficiency, novelty) | Faithful for factual search | Low (heuristic + verifier) | Search-R1 ⟨id→?⟩; R1-Searcher ⟨id→?⟩; ReSearch ⟨id→?⟩ |
-| **Outcome-RL + PRM-outcome hybrid** | train PRM from outcome rollouts, then RL on PRM | Combines 2+4; PRM can drift from outcome | Moderate | autumo-PRM / Q*-style reward shaping ⟨id→?⟩ |
+| **Implicit PRM / rechecking** | derive step reward from outcome + value | No annotation; inherits value-bias noise | Low | Implicit PRM / rechecked reasoning (arXiv ID unconfirmed) |
+| **Search-step verifier PRM** | rule-based per retrieval step (evidence sufficiency, novelty) | Faithful for factual search | Low (heuristic + verifier) | Search-R1 (arXiv:2503.09516); R1-Searcher (arXiv:2503.05592); ReSearch (arXiv:2503.19470) |
+| **Outcome-RL + PRM-outcome hybrid** | train PRM from outcome rollouts, then RL on PRM | Combines 2+4; PRM can drift from outcome | Moderate | autumo-PRM / Q*-style reward shaping (arXiv ID unconfirmed) |
 | **Step-level outcome decomposition (the author's setting)** | decompose team outcome onto role-steps | Bridges doc 02 ⇆ 03 | Verifier-bound | Multi-Agent Search + RL (ACL 2026) |
 
 ## 4 · Paper dissection (expert)
@@ -70,8 +70,11 @@ The estimator that turns $r_t$ into a gradient is the same as doc 01's: a leave-
 
 - Let's Verify Step by Step (PRM/PRM800K) — **arXiv:2305.20050** ✓
 - Math-Shepherd — **arXiv:2312.08935** ✓
-- Search-R1 / R1-Searcher / ReSearch — IDs ⟨id→?⟩, verify at `arxiv.org/abs`
-- Implicit PRM / rechecking, ProcessBench, PRMBench — IDs ⟨id→?⟩
+- Search-R1 — **arXiv:2503.09516** ✓
+- R1-Searcher — **arXiv:2503.05592** ✓
+- ReSearch — **arXiv:2503.19470** ✓
+- PRMBench — **arXiv:2501.03124** ✓
+- ProcessBench, Implicit PRM/rechecking — arXiv ID unconfirmed; cite by title
 - GRPO/Dr.GRPO/DAPO estimator context — doc 01
 
 <p align="center"><sub>03 / 03 · Process Reward for Search · cross-refs 01 (horizon), 02 (credit)</sub></p>
