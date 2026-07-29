@@ -35,9 +35,8 @@ $$\hat A_i(s,\mathbf a)\approx Q(s,\mathbf a)-Q(s,(a_{-i},\bar a_i))$$
 | **隐式角色发现(MAVEN)** | 学角色隐变量 $z_i$,值函数条件化 $(z_i,\tau_i)$ | 角色涌现而非手工 | 信用依赖 $z$ 质量;不稳 | MAVEN(NeurIPS19*) |
 | **结果重加权的细粒度信用** | 把 outcome 优势按每轮贡献**重缩放**,无需集中 $Q$ | 在 LLM token 上可落地 | 仍靠 LLM judge/启发式,非精确因果 | CW-GRPO(arXiv:2604.14267✓,ACL26);SLATE(arXiv:2602.23440✓);E-GRPO(arXiv:2510.24694✓) |
 
-> *注:QPLEX(NeurIPS21)、MAVEN(NeurIPS19) 的 arXiv id 本会话未能逐条核验匹配,按会议引用,不臆造数字 id。
 
-## 4 · 论文剖析(专家级)
+## 4 · 论文剖析
 
 ### COMA(arXiv:1705.08926✓)
 **贡献。** 集中式 critic 对智能体 $i$ 的*其他*动作求期望 $Q$,用队友实际动作;反事实基线 $=\sum_{a'}\pi_i(a'\mid\tau_i)Q(s,(a_{-i},a'))$。这是**典范级**逐智能体信用信号:策略梯度的"只奖励偏离你平时会做的部分"。
@@ -46,7 +45,7 @@ $$\hat A_i(s,\mathbf a)\approx Q(s,\mathbf a)-Q(s,(a_{-i},\bar a_i))$$
 
 ### QMIX(arXiv:1803.11485✓)(+ VDN 1706.05296✓ → QPLEX NeurIPS21*)
 **贡献。** 把 $Q_{\text{tot}}$ 分解为逐智能体 $Q_i$ 的**单调**超网(VDN 是可加特例;QMIX 放宽到单调;QPLEX 进一步到 duplex dueling)。单调性保证 **IGM**:$\arg\max_{\mathbf a}Q_{\text{tot}}=(\arg\max_{a_i}Q_i)_i$,故去中心化贪心=全局贪心——干净的*信用一致性*定理。
-**专家读。** IGM 是领域唯一严格的信用一致性结果,代价是:**单调性禁止表示角色边际贡献对抗的情形**(一智能体得利=另一智能体失信用)。LLM 团队里角色重叠(两个 searcher)、相互纠错(planner vs. verifier)天然*非单调*——QMIX 对它们是错误归纳偏置,这是可引用的、精确的理由,去偏好**异构分组**(不做单调假设、组内恢复可交换)而非 QMIX 式分解。
+IGM 是领域唯一严格的信用一致性结果,代价是:**单调性禁止表示角色边际贡献对抗的情形**(一智能体得利=另一智能体失信用)。LLM 团队里角色重叠(两个 searcher)、相互纠错(planner vs. verifier)天然*非单调*——QMIX 对它们是错误归纳偏置,这是可引用的、精确的理由,去偏好**异构分组**(不做单调假设、组内恢复可交换)而非 QMIX 式分解。
 
 ### MAPPO(arXiv:2103.01955✓)
 **贡献。** PPO + 共享集中 $V_\phi(s)$ + 逐智能体演员。多智能体 LLM RL 的障眼法:"上 MAPPO 就行"。
@@ -58,7 +57,7 @@ $$\hat A_i(s,\mathbf a)\approx Q(s,\mathbf a)-Q(s,(a_{-i},\bar a_i))$$
 
 ### CW-GRPO:贡献加权 GRPO(arXiv:2604.14267✓, ACL 2026)
 **贡献。** 用 LLM judge 估每轮检索的*贡献分数*,把 outcome 优势按每轮贡献**重新缩放**——把 COMA 的"反事实边际"思想,以 judge 近似落到搜索步级。实证:Qwen3-8B +5.0%、Qwen3-1.7B +6.3%。
-**专家读。** 这是 doc02 §3 谱系里第一类"在 LLM token 上可落地的细粒度信用",并与 doc03 (过程奖励) 共享同一估计对象:每步对结果的边际贡献。它坐实了我对 GRPO 可交换性的批判**已被 ACL 2026 正式承认**。
+这是 doc02 §3 谱系里第一类"在 LLM token 上可落地的细粒度信用",并与 doc03 (过程奖励) 共享同一估计对象:每步对结果的边际贡献。这与 ACL 2026 上 CW-GRPO 的贡献加权思路相互印证。
 **待解。** 贡献分数靠 LLM judge、非精确因果归因;judge 偏差会污染信用——这正是 doc03 §5 批判的"search reward shape 脆弱手设计"在信用侧的镜像。
 
 ## 5 · 批判
