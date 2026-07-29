@@ -34,7 +34,7 @@ Outcome reward collapses $R=\sum_t r_t$ to terminal $R(\tau)=r_H$. Three quantit
 | **Collapse diagnosis + regularization** | Analyze & fix policy degradation on long rollouts | Targets long-horizon pathology | LLDS (arXiv:2512.04220✓); ASTER (arXiv:2602.01204✓) |
 | **Tool/search-integrated RL** | Actions include retrieval/tools; reward on final answer | Horizon *interleaved* with external state | Search-R1/R1-Searcher/ReSearch → doc 03 |
 
-## 4 · Paper dissection (expert)
+## 4 · Paper dissection
 
 ### GRPO — *DeepSeekMath* (arXiv:2402.03300✓)
 Sample $G$ completions per prompt, standardized group reward, **one shared baseline, no learned $V_\phi$**. The single most important *engineering* choice for long-horizon LLM RL: a learned value head over hundred-token thinking-rollouts is the dominant variance/pathology source; dropping it is cheaper and stabler.
@@ -48,7 +48,7 @@ Pure RLVR (no SFT reasoning data) elicits long productive CoT with emergent self
 
 ### LLDS: GRPO Collapse (arXiv:2512.04220✓)
 Diagnoses **Lazy Likelihood Displacement (LLD)**: the model gains probability on "easy" tokens, not "key" ones; three stages (stagnation → decay → collapse). Root cause: group-relative advantage is *unstable on long search trajectories*. LLDS regularization recovers ~45%.
-**Expert read.** The overdue bill for GRPO's "drop the critic" engineering shortcut: its cost erupts as collapse on long search horizons. Not an isolated bug but the structural fragility of "long-horizon + outcome-only RL."
+The overdue bill for GRPO's "drop the critic" engineering shortcut: its cost erupts as collapse on long search horizons. Not an isolated bug but the structural fragility of "long-horizon + outcome-only RL."
 
 ### ASTER: Interaction Collapse (arXiv:2602.01204✓)
 A second collapse mode: in RL, internal reasoning has denser per-step reward than tool calls (whose feedback is sparse/delayed), so the model regresses to *much internal reasoning, few tool calls*. 4K interaction-dense cold start mitigates but lacks generality.
@@ -56,7 +56,7 @@ A second collapse mode: in RL, internal reasoning has denser per-step reward tha
 
 ### Dr. GRPO / DAPO (arXiv:2503.20783✓ / 2503.14476✓)
 GRPO's standardization and KL/length penalty are *confounded*: standardizing by group std couples effective step-size to reward scale, so length control behaves incoherently. Decoupling stabilizes long-horizon training and recovers more R1 behavior at small scale.
-**Expert read.** Corrections to an *estimator*, not new paradigms — important because they reveal that much published "emergence" was sensitive to normalization/idiosyncrasy. Cross-group/horizon reproducibility is the real metric.
+Corrections to an *estimator*, not new paradigms — important because they reveal that much published "emergence" was sensitive to normalization/idiosyncrasy. Cross-group/horizon reproducibility is the real metric.
 
 ## 5 · Critique — where the field over-claims
 
