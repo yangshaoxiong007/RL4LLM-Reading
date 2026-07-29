@@ -75,14 +75,14 @@ These four weld process reward to credit assignment (doc 02) — the clearest 20
 - **Auto-PRM policy-consistency under-theorized.** The MC label is policy-defined; few papers analyze the PRM-learner feedback loop. It behaves like self-distillation, with collapse/stagnation risks — unverified in practice.
 - **Search reward shape is brittle hand-design.** "Evidence sufficiency / novelty / grounding" differ per paper, rarely ablated together across the trio. No shared, verifiable search-step reward benchmark (PRMBench only evaluates PRMs, not search-step rewards).
 
-## 6 · Open problems (→ author's line)
+## 6 · Open problems
 
 1. **A unified, verifiable search-process reward.** Converge the trio's ad-hoc step rewards into one checkable surrogate (the search analog of a math verifier).
 2. **Auto-PRM under multi-agent rollouts.** Math-Shepherd assumes a *single* continuation policy; in heterogeneous search, labeled "eventual success" mixes role contributions. Credit-aware auto-PRM = the open joint of docs 02 ⇆ 03.
 3. **PRM-as-critic vs. PRM-as-reward.** Use a PRM as the centralized credit critic (COMA-style, doc 02) rather than merely a reward bonus — barely explored for LLM search agents.
 4. **Verifier for research.** Terminal constraint: without a research verifier, even perfect process-reward machinery caps where the verifier is trustworthy.
 
-## References (§ verified)
+## References
 
 Let's Verify **2305.20050**✓; Math-Shepherd **2312.08935**✓; Search-R1 **2503.09516**✓; R1-Searcher **2503.05592**✓; ReSearch **2503.19470**✓; ReasonRAG **2505.14069**✓; LeTS **2505.17447**✓; E-GRPO **2510.24694**✓; StepSearch **2505.15107**✓; IGPO **2510.14967**✓; IG-Search **2604.15148**✓; CW-GRPO **2604.14267**✓ (ACL26); SLATE **2602.23440**✓; C-GRPO **2601.06021**✓; Search-R2 **2602.03647**✓; PRMBench **2501.03124**✓. GRPO/Dr.GRPO/DAPO/LLDS/ASTER context — doc 01.
 
