@@ -37,7 +37,7 @@ i.e. "how much better the outcome was because agent $i$ played $a_i$ instead of 
 
 > *QPLEX (NeurIPS21), MAVEN (NeurIPS19): arXiv id not title-matched this session — cited by venue, no fabricated numeric id.*
 
-## 4 · Paper dissection (expert)
+## 4 · Paper dissection
 
 ### COMA (arXiv:1705.08926✓)
 Centralized critic computes expected $Q$ over agent $i$'s other actions using teammates' actual actions; counterfactual baseline $=\sum_{a'}\pi_i(a'\mid\tau_i)Q(s,(a_{-i},a'))$. The canonical per-agent signal: "credit only the deviation from what you'd usually do."
@@ -46,7 +46,7 @@ Centralized critic computes expected $Q$ over agent $i$'s other actions using te
 
 ### QMIX (arXiv:1803.11485✓) (+ VDN 1706.05296✓ → QPLEX NeurIPS21*)
 Factor $Q_{\text{tot}}$ as a **monotone** hypernet of per-agent $Q_i$ (VDN additive; QMIX monotone; QPLEX duplex-dueling). Monotonicity guarantees **IGM**: $\arg\max_{\mathbf a}Q_{\text{tot}}=(\arg\max_{a_i}Q_i)_i$, so decentralized greedy = global greedy — a clean credit-consistency theorem.
-**Expert read.** IGM is the field's only rigorous consistency result, bought at a price: **monotonicity forbids representing roles whose marginal contributions are antagonistic.** LLM teams with overlapping roles or mutual correction (planner vs. verifier) are *non-monotone by construction* — QMIX is the wrong inductive bias, a precise, citable reason to prefer **heterogeneous grouping** (no monotonicity, restore within-group exchangeability) over QMIX-style decomposition.
+IGM is the field's only rigorous consistency result, bought at a price: **monotonicity forbids representing roles whose marginal contributions are antagonistic.** LLM teams with overlapping roles or mutual correction (planner vs. verifier) are *non-monotone by construction* — QMIX is the wrong inductive bias, a precise, citable reason to prefer **heterogeneous grouping** (no monotonicity, restore within-group exchangeability) over QMIX-style decomposition.
 
 ### MAPPO (arXiv:2103.01955✓)
 PPO + shared centralized $V_\phi(s)$ + per-agent actors. The decoy of multi-agent LLM RL: "just use MAPPO."
@@ -58,7 +58,7 @@ Partition agents into role-homogeneous *groups*; enforce GRPO exchangeability *w
 
 ### CW-GRPO: Contribution-Weighted GRPO (arXiv:2604.14267✓, ACL 2026)
 An LLM judge estimates each retrieval turn's *contribution score* and **rescales** the outcome advantage by per-turn contribution — landing COMA's counterfactual-marginal idea (via a judge) onto search-step granularity. Qwen3-8B +5.0%, Qwen3-1.7B +6.3%.
-**Expert read.** The first landable fine-grained credit on LLM tokens, sharing its estimate object with doc 03 (per-step marginal contribution to outcome). It confirms that my exchangeability critique of GRPO is *formally recognized at ACL 2026*.
+The first landable fine-grained credit on LLM tokens, sharing its estimate object with doc 03 (per-step marginal contribution to outcome). It aligns with the contribution-weighting direction at ACL 2026 (CW-GRPO).
 **Unresolved.** Contribution comes from an LLM judge, not precise causal attribution; judge bias contaminates credit — the mirror of doc 03's "search reward shape is brittle hand-design," on the credit side.
 
 ## 5 · Critique
