@@ -27,8 +27,8 @@ with **outcome reward** $R=\sum_t r_t$ collapsed to a terminal $R(\tau)=r_H$ (sp
 | Family | Core idea | Long-horizon relevance | Representative work |
 |---|---|---|---|
 | **Outcome RL, group baseline** | Drop the critic; baseline across G samples | Removes a noisy long-horizon value estimate | GRPO (DeepSeekMath, 2402.03300); DeepSeek-R1 (2501.12948) |
-| **Outcome RL, decoupled control** | Separate advantage estimator from KL/length penalties | Stops length-hacking while keeping exploration | Dr. GRPO ⟨id→?⟩; DAPO ⟨id→?⟩ |
-| **RL from verifiable rewards (RLVR / RFT)** | Reward = executable verifier (math judge, code tests, retrieval ground truth) | Makes terminal reward *cheap and faithful* even over long rollouts | R1 cold-start; ReFT ⟨id→?⟩ |
+| **Outcome RL, decoupled control** | Separate advantage estimator from KL/length penalties | Stops length-hacking while keeping exploration | Dr. GRPO (arXiv:2503.20783); DAPO (arXiv:2503.14476) |
+| **RL from verifiable rewards (RLVR / RFT)** | Reward = executable verifier (math judge, code tests, retrieval ground truth) | Makes terminal reward *cheap and faithful* even over long rollouts | R1 cold-start; ReFT (arXiv:2401.08967) |
 | **Step/Process-supervised RL** | Reward intermediate steps via a PRM | **Direct attack on horizon** — dense, attributable | Let's Verify (2305.20050); Math-Shepherd (2312.08935) → see doc 03 |
 | **Tool/search-integrated RL** | Actions include retrieval/tool calls; reward on final answer | Long horizon *is inter-leaved* with external state | Search-R1 / R1-Searcher / ReSearch → doc 03 |
 | **Curriculum / staged horizon** | Grow H during training; cold-start then RL | Mitigates reward sparsity by length budgeting | R1 cold-start→RL pipeline; multi-stage RL |
@@ -69,6 +69,8 @@ with **outcome reward** $R=\sum_t r_t$ collapsed to a terminal $R(\tau)=r_H$ (sp
 - DeepSeek-R1 — **arXiv:2501.12948** ✓
 - Let's Verify Step by Step (PRM/PRM800K) — **arXiv:2305.20050** ✓ (cross-ref doc 03)
 - Math-Shepherd — **arXiv:2312.08935** ✓ (cross-ref doc 03)
-- Dr. GRPO, DAPO, ReFT — IDs ⟨id→?⟩, verify at `arxiv.org/abs`
+- Dr. GRPO — **arXiv:2503.20783** ✓ ("Understanding R1-Zero-Like Training")
+- DAPO — **arXiv:2503.14476** ✓
+- ReFT — **arXiv:2401.08967** ✓
 
 <p align="center"><sub>01 / 03 · Long-Horizon RL · cross-refs 02 (credit), 03 (process reward)</sub></p>
