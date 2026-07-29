@@ -43,7 +43,7 @@ The table fuses classic PRMs and recent search RL, annotated [reward type / scop
 
 > Spectrum read: 2025–2026 search RL is **almost uniformly step-level + PRM** (or ORM+PRM hybrid); pure outcome RL is now a minority — double-sided evidence for doc 03 §5's critique ("PRM universally better" accepted in practice; "judge/heuristic brittleness" inherited in practice).
 
-## 4 · Paper dissection (expert)
+## 4 · Paper dissection
 
 ### PRM800K / Let's Verify (arXiv:2305.20050✓)
 Scale human *step-level* labels to ~800k; train $\rho_\phi$; show **best-of-N with $\rho_\phi$ beats outcome-reward best-of-N** on math. Founding result: *process supervision helps*.
@@ -59,7 +59,7 @@ Train LLM agents that **interleave reasoning and retrieval** under RL, with a **
 - **Search-R1** (arXiv:2503.09516✓): each retrieval is an action; reward shaped by whether retrieval improves the partial answer → process reward = the query's marginal information gain.
 - **R1-Searcher** (arXiv:2503.05592✓): learns *when to search, what to query*, rewarded by retrieval quality — closest to "verifiable process reward" in the open-ended setting.
 - **ReSearch** (arXiv:2503.19470✓): separates reasoning from search state, uses process reward to align the reasoning transition with retrieved evidence — clean because the transition is locally checkable.
-**Expert synthesis (the crux of all three notes).** Search-RL is the existence proof that **process rewards can be cheaper than outcome verifiers when the action space is search**, because retrieval steps have checkable intermediate states. This is exactly why *the author's multi-agent-search + RL line* lives here: role-specialized search agents share an outcome, and the only affordable credit signal is the search-step process reward — making doc 02's between-group credit problem *solvable from data* (doc 02 §6).
+Search-RL is the existence proof that **process rewards can be cheaper than outcome verifiers when the action space is search**, because retrieval steps have checkable intermediate states. This is exactly why *the author's multi-agent-search + RL line* lives here: role-specialized search agents share an outcome, and the only affordable credit signal is the search-step process reward — making doc 02's between-group credit problem *solvable from data* (doc 02 §6).
 
 ### The credit-via-PRM quartet: ReasonRAG / CW-GRPO / SLATE / E-GRPO
 These four weld process reward to credit assignment (doc 02) — the clearest 2025–2026 "PRM-as-credit" spectrum:
