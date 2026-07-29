@@ -31,7 +31,7 @@ i.e. "how much better the outcome was because agent $i$ played $a_i$ instead of 
 | **Difference rewards / COMA** | $D_i=Q(\mathbf a)-Q(\mathbf a_{-i},c_i)$ | Exact per-agent marginal | Needs learnable centralized $Q$ | COMA (arXiv:1705.08926✓) |
 | **Value decomposition (VDN→QMIX→QPLEX)** | $Q_{\text{tot}}=f(Q_1,\dots,Q_n)$, monotone for IGM | Scalable, principled consistency | Monotonicity limits antagonistic roles | QMIX (arXiv:1803.11485✓); QPLEX (NeurIPS21*) |
 | **CTDE+PPO (MAPPO)** | train shared $V_\phi$, local actors | Simple, scalable | $V_\phi$ shared → **no per-role credit** | MAPPO (arXiv:2103.01955✓) |
-| **Role-aware / heterogeneous grouping** | partition into homogeneous *groups*, baseline within | Restores within-group exchangeability; isolates roles | Group definition = inductive bias | Heterogeneous-group RL (author, ACL26); MADDPG (arXiv:1706.02275✓) |
+| **Role-aware / heterogeneous grouping** | partition into homogeneous *groups*, baseline within | Restores within-group exchangeability; isolates roles | Group definition = inductive bias | Heterogeneous-group RL (ACL 2026); MADDPG (arXiv:1706.02275✓) |
 | **Latent-role discovery (MAVEN)** | learn $z_i$, value on $(z_i,\tau_i)$ | Emergent roles | $z$-conditioning unstable at token level | MAVEN (NeurIPS19*) |
 | **Outcome-reweighted fine-grained credit** | rescale outcome advantage by per-turn contribution, no centralized $Q$ | Landable on LLM tokens | Still LLM-judge/heuristic, not causal | CW-GRPO (arXiv:2604.14267✓); SLATE (arXiv:2602.23440✓); E-GRPO (arXiv:2510.24694✓) |
 
@@ -52,7 +52,7 @@ IGM is the field's only rigorous consistency result, bought at a price: **monoto
 PPO + shared centralized $V_\phi(s)$ + per-agent actors. The decoy of multi-agent LLM RL: "just use MAPPO."
 **Sharp critique.** MAPPO trains one shared team advantage; it solves *cross-agent stability*, **not** credit assignment. Mapping LLM roles onto MAPPO actors *silently reverts* to $A^{\text{team}}$ — every role rewarded alike. Its popularity masks that it makes credit *worse*.
 
-### Heterogeneous-Group RL (author's line, ACL 2026)
+### Heterogeneous-Group RL
 Partition agents into role-homogeneous *groups*; enforce GRPO exchangeability *within* group (unbiased baseline), handle *between*-group credit via group structure. The bridge between COMA's per-agent counterfactual (expensive) and MAPPO's shared value (credit-blind): cheap unbiased within-group credit, sacrificing only fine-grained between-role differentiation — which grouping makes explicit.
 **Why the right surgery on GRPO.** GRPO's bias is exchangeability violation; heterogeneous grouping *restores* it by construction. The open question it leaves — between-group credit without a centralized $Q$ — is where COMA/QMIX machinery could re-enter if tractable.
 
@@ -68,15 +68,15 @@ The first landable fine-grained credit on LLM tokens, sharing its estimate objec
 - **Role labels as a free lunch.** Fixing roles makes grouping look clean, but in deep research the *specialization itself* should be learned. MAVEN-style latent roles are underexplored for LLM agents (token actions destabilize $z$-conditioning).
 - **Judge-based credit circularity.** CW-GRPO/SLATE estimate contribution with an LLM judge co-trained with the policy — self-reinforcement bias risk, no theoretical guarantee (echoing doc 03's auto-PRM policy-consistency issue).
 
-## 6 · Open problems (→ author's line)
+## 6 · Open problems
 
 1. **Between-group credit without centralized $Q$.** Can process rewards (doc 03) supply the between-group signal that COMA would, cheaply and from data?
 2. **Learned, not hand-defined roles.** End-to-end role emergence under shared reward + long horizon.
 3. **Non-monotone credit consistency.** A theorem weaker than IGM but stronger than $A^{\text{team}}$ — the missing formal object for LLM teams.
 4. **Verifier as credit signal.** For deep research the only reliable per-step credit may be a verifier; making it cheap is doc 03's job.
 
-## References (§ verified)
+## References
 
-COMA **1705.08926**✓; QMIX **1803.11485**✓; VDN **1706.05296**✓; MAPPO **2103.01955**✓; MADDPG **1706.02275**✓; CW-GRPO **2604.14267**✓ (ACL26); SLATE **2602.23440**✓; E-GRPO **2510.24694**✓; QPLEX NeurIPS21 / MAVEN NeurIPS19 (by venue); Heterogeneous-group RL (author, ACL26, no arXiv).
+COMA **1705.08926**✓; QMIX **1803.11485**✓; VDN **1706.05296**✓; MAPPO **2103.01955**✓; MADDPG **1706.02275**✓; CW-GRPO **2604.14267**✓ (ACL26); SLATE **2602.23440**✓; E-GRPO **2510.24694**✓; QPLEX NeurIPS21 / MAVEN NeurIPS19 (by venue); Heterogeneous-group RL (ACL 2026; no arXiv id).
 
 <p align="center"><sub>02 / 03 · Credit Assignment · cross-refs 01 (horizon), 03 (process reward)</sub></p>
