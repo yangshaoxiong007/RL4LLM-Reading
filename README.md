@@ -3,7 +3,7 @@
 <p align="center">
   <b>🇨🇳 <a href="#中文版">中文</a></b> &nbsp;&nbsp; <b>🇬🇧 <a href="#english">English</a></b>
   <br/><br/>
-  <img src="https://img.shields.io/badge/level-expert_reading_notes-0E1117?style=flat-square"/>
+  <img src="https://img.shields.io/badge/type-reading_notes-0E1117?style=flat-square"/>
   <img src="https://img.shields.io/badge/topic-RL_for_LLMs-FF4081?style=flat-square"/>
   <img src="https://img.shields.io/badge/focus-multi--agent%20%7C%20search%20%7C%20long--horizon-F5C451?style=flat-square"/>
   <img src="https://img.shields.io/badge/id_verification-✓_cross--checked-22D3EE?style=flat-square"/>
@@ -11,7 +11,7 @@
 
 ---
 
-> 三条交错前沿的**专家级**精读笔记。每篇自洽深读:**问题 → 形式化 → 方法谱系 → 论文剖析 → 批判 → 开放问题**。所有数字 arXiv id 均在 `arxiv.org/abs/<id>` 标题匹配核验过;不可匹配者按会议/标题引用。
+> 三条交错前沿的精读笔记。每篇自洽深读:**问题 → 形式化 → 方法谱系 → 论文剖析 → 批判 → 开放问题**。所有数字 arXiv id 均在 `arxiv.org/abs/<id>` 标题匹配核验过;不可匹配者按会议/标题引用。
 
 ## 为什么这三条一起
 
@@ -43,6 +43,7 @@
 | 01 | **长程 RL** | 奖励远滞后如何训练 LLM? | GRPO, R1-RL, LLDS/ASTER 崩溃诊断 | [`01-long-horizon-rl.zh.md`](./01-long-horizon-rl.zh.md) |
 | 02 | **信用分配** | 共享奖励团队里谁/哪步记功? | 异构分组, COMA, MAPPO/QMIX, CW-GRPO/SLATE | [`02-credit-assignment-rl.zh.md`](./02-credit-assignment-rl.zh.md) |
 | 03 | **搜索过程奖励** | 怎么给搜索步密集忠实奖励? | PRM800K, Math-Shepherd, Search-R1 系列, ReasonRAG/LeTS | [`03-process-reward-search.zh.md`](./03-process-reward-search.zh.md) |
+| 04 | **问题诊断与创新方向** | 12 条结构性问题怎么治根因? | LLDS/ASTER/CW-GRPO/RE-TRAC + 7 创新方向 | [`04-problems-and-innovations.zh.md`](./04-problems-and-innovations.zh.md) |
 
 ## English
 
@@ -51,21 +52,22 @@
 | 01 | **Long-Horizon RL** | How to train LLMs when reward lands far downstream? | GRPO, R1-RL, LLDS/ASTER collapse | [`01-long-horizon-rl.md`](./01-long-horizon-rl.md) |
 | 02 | **Credit Assignment** | Who/which step deserves credit in shared-reward teams? | Heterogeneous-group, COMA, CW-GRPO/SLATE | [`02-credit-assignment-rl.md`](./02-credit-assignment-rl.md) |
 | 03 | **Process Reward for Search** | How to give dense, faithful rewards to search steps? | PRM, Math-Shepherd, Search-R1 family, ReasonRAG/LeTS | [`03-process-reward-search.md`](./03-process-reward-search.md) |
+| 04 | **Problem Diagnosis & Innovations** | How to treat the 12 failure modes at the root? | LLDS/ASTER/CW-GRPO/RE-TRAC + 7 directions | [`04-problems-and-innovations.md`](./04-problems-and-innovations.md) |
 
 ## 阅读约定
 
 每篇同构,使三条可读成一个论证:
 
 1. **为何重要** — 动机失败模式。
-2. **形式化** — 专家需要的 MDP/MADP/代理目标框架。
+2. **形式化** — 所需的 MDP/MADP/代理目标框架。
 3. **方法谱系** — 景观,非孤立论文。
 4. **论文剖析** — 每篇实际贡献(及其界限)。
 5. **批判** — 领域何处过度声称或欠理论。
 6. **开放问题** — 活跃问题,多个直指*多智能体搜索 + RL*(作者研究线)。
 
-## id 核验方法学
+## 参考文献
 
-本笔记里每个数字 arXiv id 都从 `arxiv.org/abs/<id>` 抓取并标题匹配。本会话核验确认(✓):GRPO 2402.03300、R1 2501.12948、LLDS 2512.04220、ASTER 2602.01204、Dr.GRPO 2503.20783、DAPO 2503.14476、ReFT 2401.08967、Let's Verify 2305.20050、Math-Shepherd 2312.08935、Search-R1 2503.09516、R1-Searcher 2503.05592、ReSearch 2503.19470、ReasonRAG 2505.14069、LeTS 2505.17447、E-GRPO 2510.24694、StepSearch 2505.15107、IGPO 2510.14967、IG-Search 2604.15148、CW-GRPO 2604.14267、SLATE 2602.23440、C-GRPO 2601.06021、Search-R2 2602.03647、PRMBench 2501.03124、COMA 1705.08926、QMIX 1803.11485、VDN 1706.05296、MAPPO 2103.01955、MADDPG 1706.02275。QPLEX/MAVEN 的 arXiv id 未匹配成功,按会议引用,不臆造数字。
+笔记中涉及的数字 arXiv id 均可在 arXiv 上按标题核对:GRPO 2402.03300、R1 2501.12948、LLDS 2512.04220、ASTER 2602.01204、Dr.GRPO 2503.20783、DAPO 2503.14476、ReFT 2401.08967、Let's Verify 2305.20050、Math-Shepherd 2312.08935、Search-R1 2503.09516、R1-Searcher 2503.05592、ReSearch 2503.19470、ReasonRAG 2505.14069、LeTS 2505.17447、E-GRPO 2510.24694、StepSearch 2505.15107、IGPO 2510.14967、IG-Search 2604.15148、CW-GRPO 2604.14267、SLATE 2602.23440、C-GRPO 2601.06021、Search-R2 2602.03647、PRMBench 2501.03124、COMA 1705.08926、QMIX 1803.11485、VDN 1706.05296、MAPPO 2103.01955、MADDPG 1706.02275。QPLEX(NeurIPS 2021)、MAVEN(NeurIPS 2019)按会议引用。
 
 ## 作者背景
 
@@ -73,5 +75,5 @@
 
 ---
 
-<p align="center"><sub>§ 切勿引用未标记 ✓ 的数字 id;不可匹配者见上「按会议引用」。</sub></p>
+<p align="center"><sub>笔记随阅读持续更新。</sub></p>
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:9B6BFF,50:5B8CFF,100:0F2027&height=100&section=footer&text=Toward%20faithful%20credit%20attribution.&fontSize=14&fontColor=ffffff&fontAlignY=45&animation=blink"/>
