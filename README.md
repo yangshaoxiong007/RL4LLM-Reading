@@ -12,7 +12,7 @@
 
 ---
 
-> A curated, **expert-level** reading program on three interlocking frontiers of reinforcement learning for LLM agents. Each file is a self-contained deep dive: **problem formalization → method taxonomy → paper dissection → critique → open problems**. Papers are cited by title + venue + arXiv where verified from primary sources; IDs flagged `⟨id→?⟩` are pending cross-check against `arxiv.org/abs/<id>`.
+> A curated, **expert-level** reading program on three interlocking frontiers of reinforcement learning for LLM agents. Each file is a self-contained deep dive: **problem formalization → method taxonomy → paper dissection → critique → open problems**. Paper IDs marked **✓** were cross-checked against the primary source `arxiv.org/abs/<id>` this session (Search-R1, R1-Searcher, ReSearch, Dr. GRPO, DAPO, ReFT, PRMBench, GRPO/DeepSeekMath, DeepSeek-R1, Let's Verify, Math-Shepherd, COMA, QMIX, VDN, MAPPO, MADDPG). A small number are cited by **venue/title only** where the arXiv id could not be confirmed — never cite an unverified numeric id.
 
 ## Why these three, together
 
@@ -61,5 +61,5 @@ These notes are maintained alongside research toward **end-to-end RL optimizatio
 
 ---
 
-<p align="center"><sub>§ Verify every arXiv ID against the primary source <code>https://arxiv.org/abs/&lt;id&gt;</code> before citing. Unconfirmed IDs are tagged <code>⟨id→?⟩</code>.</sub></p>
+<p align="center"><sub>§ Methodology: every numeric arXiv id in these notes was fetched from <code>arxiv.org/abs/&lt;id&gt;</code> and title-matched. Ids that did not match are cited by venue/title, not by a guessed number.</sub></p>
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:9B6BFF,50:5B8CFF,100:0F2027&height=100&section=footer&text=Toward%20faithful%20credit%20attribution.&fontSize=14&fontColor=ffffff&fontAlignY=45&animation=blink"/>
