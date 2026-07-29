@@ -78,14 +78,14 @@ Search-RL 是**当动作空间是搜索时,过程奖励可比结果 verifier 更
 - **auto-PRM 策略一致欠理论。** MC 标签是策略定义的;少有论文分析 PRM-learner 反馈环。它行为像自蒸馏,有坍缩/停滞风险——实践中未验证。
 - **搜索奖励塑形是脆弱手设计。** "证据充分性""新颖性""grounding" 论文各异,三件套间很少一起 ablate。缺共享、可验证的搜索步奖励基准(PRMBench 只评 PRM 本身,不评搜索步奖励)。
 
-## 6 · 开放问题(→ 作者的研究线)
+## 6 · 开放问题
 
 1. **统一、可验证的搜索过程奖励。** 把三件套的临时步奖励收敛到一个可检 surrogate(搜索版的数学 verifier)。
 2. **多智能体 rollout 下的 auto-PRM。** Math-Shepherd 假设*单一*续写策略;异构搜索里标注的"最终成功"混了角色贡献。信用感知 auto-PRM = docs 02 ⇆ 03 的开放枢轴。
 3. **PRM 作 critic 而非 reward。** 用 PRM 作信用(COMA 式,doc02)的集中 critic,而非仅奖励附加——LLM 搜索 agent 几乎未探。
 4. **研究的 verifier。** 终极约束:无研究 verifier,再完美的过程奖励机制也只能在 verifier 可信之处止步。
 
-## 参考文献(经 § 逐条核验)
+## 参考文献
 
 - Let's Verify(PRMM800K) — **arXiv:2305.20050** ✓
 - Math-Shepherd — **arXiv:2312.08935** ✓
