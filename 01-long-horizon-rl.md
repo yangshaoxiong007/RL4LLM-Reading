@@ -64,14 +64,14 @@ Corrections to an *estimator*, not new paradigms — important because they reve
 - **Horizon conflated with length, not depth.** A 5000-token ramble is long-horizon but decisionally shallow; credit is about **depth of causal dependence**, which token-count doesn't measure. Under-specified in the literature.
 - **KL anchoring as a band-aid.** $\beta$ does the work *faithful credit attribution* should. Remove process structure and $\beta$ caps how far long-horizon competence can grow.
 
-## 6 · Open problems (→ author's line)
+## 6 · Open problems
 
 1. **Faithful step credit without an external PRM.** Can heterogeneous-group structure (doc 02) *replace* a hand-shaped process reward?
 2. **Search-as-long-horizon-MDP.** When the horizon is *search iterations*, state = growing evidence context; value estimation and reward shaping are essentially open.
 3. **Verifiable rewards for research, not just math/code.** The bottleneck for long-horizon deep-research RL is the verifier.
 4. **Multi-agent × long horizon.** GRPO's exchangeability breaks under role specialization; combining docs 02 ⇆ 01 ⇆ 03 is the unsolved core.
 
-## References (§ verified)
+## References
 
 GRPO/DeepSeekMath **2402.03300**✓; DeepSeek-R1 **2501.12948**✓; LLDS **2512.04220**✓; ASTER **2602.01204**✓; Dr. GRPO **2503.20783**✓; DAPO **2503.14476**✓; ReFT **2401.08967**✓; Let's Verify **2305.20050**✓; Math-Shepherd **2312.08935**✓.
 
