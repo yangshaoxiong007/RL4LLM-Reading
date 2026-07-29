@@ -131,11 +131,11 @@ Synthesis(⑪)  ───▶  I. Adaptive hierarchical reward (fine signal)
 | 6 | VI unified multimodal RL | ⭐⭐⭐⭐⭐ | very high | low | long-term |
 | 7 | VII self-evolving world model | ⭐⭐⭐⭐⭐ | very high | low | long-term |
 
-> I and II top the impact×feasibility product—they land squarely on the two largest root causes exposed across Notes 01–03 (credit assignment and context rot), and this research line (multi-agent search + RL) needs both resolved simultaneously.
+> I and II top the impact×feasibility product—they land squarely on the two largest root causes exposed across Notes 01–03 (credit assignment and context rot), and this setting (long-horizon multi-agent search + RL) needs both resolved simultaneously.
 
 ---
 
-## 6. Convergence with the author's research line
+## 6. Convergence with multi-agent search + RL
 
 Four shortest paths bite directly on **end-to-end RL optimization of LLM-driven multi-agent search systems**:
 - **I** supplies hierarchical advantage estimation for an heterogeneous-group multi-agent setting—resolving credit assignment when heterogeneous role-LLMs share a team reward;
@@ -143,7 +143,6 @@ Four shortest paths bite directly on **end-to-end RL optimization of LLM-driven 
 - **III** generalizes the retriever–reasoner split into a unified "decoupled multi-agent sub-modules" training paradigm;
 - **VII** brings world-model cheap interaction to make end-to-end multi-agent RL affordable.
 
-Relevant publications on the author's homepage.
 
 ---
 
