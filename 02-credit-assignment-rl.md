@@ -27,10 +27,10 @@ i.e. *"how much better was the outcome because agent $i$ played $a_i$ rather tha
 | Family | Counterfactual form | Strength | Limit | Representative |
 |---|---|---|---|---|
 | **Difference rewards / COMA** | $D_i=Q(\mathbf a)-Q(\mathbf a_{-i},c_i)$ at counterfactual $c_i$ | Exact per-agent marginal | Needs a learnable centralized $Q$ | COMA (1705.08926) |
-| **Value decomposition (VDN→QMIX→QPLEX)** | Assume $Q_{\text{tot}}=f(Q_1,\dots,Q_n)$, monotone for credit-consistency | Scalable; principled "IGM" constraint | Monotonicity (QMIX) limits representation of antagonistic roles | VDN (1706.05296); QMIX (1803.11485); QPLEX ⟨id→?⟩ |
+| **Value decomposition (VDN→QMIX→QPLEX)** | Assume $Q_{\text{tot}}=f(Q_1,\dots,Q_n)$, monotone for credit-consistency | Scalable; principled "IGM" constraint | Monotonicity (QMIX) limits representation of antagonistic roles | VDN (1706.05296); QMIX (1803.11485); QPLEX (NeurIPS 2021) |
 | **Centralized training, decentralized exec (CTDE), PPO** | Train value $V_\phi$ centralized; actors local | Simple, scales to many agents | $V_\phi$ shared → **no per-agent credit**, back to $A^{\text{team}}$ | MAPPO (2103.01955) |
 | **Role-aware / heterogeneous grouping** | Partition agents into homogeneous *groups*, baseline within group | Restores exchangeability *within* group; isolates *between*-group roles | Group definition is a design/inductive-bias choice | Heterogeneous-group RL (author, ACL 2026); MADDPG lineage (1706.02275) |
-| **Latent-role discovery (MAVEN)** | Learn latent role $z_i$, value conditioned on $(z_i,\tau_i)$ | Roles emerge, not hand-designed | Credit now depends on $z$ quality; training instability | MAVEN ⟨id→?⟩ |
+| **Latent-role discovery (MAVEN)** | Learn latent role $z_i$, value conditioned on $(z_i,\tau_i)$ | Roles emerge, not hand-designed | Credit now depends on $z$ quality; training instability | MAVEN (NeurIPS 2019) |
 | **LLM-agent turn-level credit** | Assign per-turn / per-tool-call credit via outcome decomposition | Brings PRM machinery (doc 03) to agents | Decomposition often hand-crafted | Search-R1/R1-Searcher/ReSearch (doc 03); emerging |
 
 ## 4 · Paper dissection (expert)
@@ -73,7 +73,8 @@ i.e. *"how much better was the outcome because agent $i$ played $a_i$ rather tha
 - VDN — **arXiv:1706.05296** ✓
 - MAPPO — **arXiv:2103.01955** ✓
 - MADDPG — **arXiv:1706.02275** ✓
-- QPLEX, MAVEN — IDs ⟨id→?⟩, verify at `arxiv.org/abs`
+- QPLEX — NeurIPS 2021 (arXiv ID unconfirmed; cite by venue)
+- MAVEN — NeurIPS 2019 (arXiv ID unconfirmed; cite by venue)
 - Heterogeneous-group RL for LLM multi-agent search — ACL 2026 (author), no arXiv
 
 <p align="center"><sub>02 / 03 · Credit Assignment · cross-refs 01 (horizon), 03 (process reward)</sub></p>
